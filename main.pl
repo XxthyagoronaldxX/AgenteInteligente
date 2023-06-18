@@ -28,37 +28,98 @@
 % SKILL DE HABILIDADES DO AGENTE INTELIGENTE. [Ramon]
 % ESCUTAR EVENTO DE OBJETOS. (DEFINIR METRICAS)	[Thyago]	
 
-dynamic estado/3.
-estado(lampada, ligado, quarto_1).
-estado(lampada, ligado, quarto_2).
-estado(lampada, ligado, quarto_3).
-estado(lampada, ligado, banheiro).
-estado(lampada, ligado, cozinha).
-estado(lampada, ligado, sala).
-estado(lampada, ligado, corredor).
-estado(lampada, ligado, varanda).
-estado(tv, ligado, sala).
-estado(tv, ligado, quarto_2).
-estado(arcodicionado, ligado, quarto_1).
-estado(arcodicionado, ligado, quarto_2).
-estado(arcodicionado, ligado, quarto_3).
-estado(cortinainteligente, ligado, quarto_1).
-estado(cortinainteligente, ligado, quarto_2).
-estado(cortinainteligente, ligado, quarto_3).
-estado(computador, ligado, quarto_1).
-estado(computador, ligado, quarto_2).
-estado(computador, ligado, quarto_3).
-estado(aparelhodesom, ligado, quarto_1).
-estado(aparelhodesom, ligado, sala).
-estado(fechaduraporta, trancado, sala).
-estado(janela, trancado, quarto_1).
-estado(janela, trancado, quarto_2).
-estado(janela, trancado, quarto_3).
-estado(janela, trancado, sala).
-estado(janela, trancado, cozinha).
+:- dynamic objeto/3.	
+objeto(lampada, ligado, quarto_1).
+objeto(lampada, ligado, quarto_2).
+objeto(lampada, ligado, quarto_3).
+objeto(lampada, ligado, banheiro).
+objeto(lampada, ligado, cozinha).
+objeto(lampada, ligado, sala).
+objeto(lampada, ligado, corredor).
+objeto(lampada, ligado, varanda).
+objeto(tv, ligado, sala).
+objeto(tv, ligado, quarto_2).
+objeto(arcodicionado, ligado, quarto_1).
+objeto(arcodicionado, ligado, quarto_2).
+objeto(arcodicionado, ligado, quarto_3).
+objeto(cortinainteligente, ligado, quarto_1).
+objeto(cortinainteligente, ligado, quarto_2).
+objeto(cortinainteligente, ligado, quarto_3).
+objeto(computador, ligado, quarto_1).
+objeto(computador, ligado, quarto_2).
+objeto(computador, ligado, quarto_3).
+objeto(aparelhodesom, ligado, quarto_1).
+objeto(aparelhodesom, ligado, sala).
+objeto(fechaduraporta, trancado, sala).
+objeto(janela, trancado, quarto_1).
+objeto(janela, trancado, quarto_2).
+objeto(janela, trancado, quarto_3).
+objeto(janela, trancado, sala).
+objeto(janela, trancado, cozinha).
 
-evento().
+:- dynamic skill/4.
+skill(foradecasa, lampada, desligado, quarto_1).
+skill(foradecasa, lampada, desligado, quarto_2).
+skill(foradecasa, lampada, desligado, quarto_3).
+skill(foradecasa, lampada, desligado, banheiro).
+skill(foradecasa, lampada, desligado, cozinha).
+skill(foradecasa, lampada, desligado, sala).
+skill(foradecasa, lampada, desligado, corredor).
+skill(foradecasa, lampada, desligado, varanda).
+skill(foradecasa, tv, desligado, sala).
+skill(foradecasa, tv, desligado, quarto_2).
+skill(foradecasa, arcodicionado, desligado, quarto_1).
+skill(foradecasa, arcodicionado, desligado, quarto_2).
+skill(foradecasa, arcodicionado, desligado, quarto_3).
+skill(foradecasa, cortinainteligente, fechado, quarto_1).
+skill(foradecasa, cortinainteligente, fechado, quarto_2).
+skill(foradecasa, cortinainteligente, fechado, quarto_3).
+skill(foradecasa, computador, desligado, quarto_1).
+skill(foradecasa, computador, desligado, quarto_2).
+skill(foradecasa, computador, desligado, quarto_3).
+skill(foradecasa, aparelhodesom, desligado, quarto_1).
+skill(foradecasa, aparelhodesom, desligado, sala).
+skill(foradecasa, fechaduraporta, trancado, sala).
+skill(foradecasa, janela, trancado, quarto_1).
+skill(foradecasa, janela, trancado, quarto_2).
+skill(foradecasa, janela, trancado, quarto_3).
+skill(foradecasa, janela, trancado, sala).
+skill(foradecasa, janela, trancado, cozinha). 
 
-acao().
+% MAIN
+main :- write("=== AGENTE INTELIGENTE ==="),
+    	write("1 - Lista Objetos."),
+    	write("2 - Utilizar skill."),
+    	read(EVENT),
+    	evento(EVENT),
+    	main. 
 
-skill().
+% EVENTO
+evento(EVENT) :- EVENT == 1, acao_lista_objetos();
+    	EVENT == 2, acao_usar_skill().
+
+% ACAO - LISTA OBJETOS
+acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL], objeto(NOME, ESTADO, LOCAL), LISTA_OBJETOS), 
+    	write(LISTA_OBJETOS).
+
+% ACAO - EXECUTAR SKILL
+acao_usar_skill() :- write("=== Selecionar Skill ==="),
+    	write("1 - Fora de casa."),
+    	read(_), %TODO
+        acao_executar_skill(foradecasa).
+
+acao_executar_skill(SKILL) :- skill(SKILL, OBJETO, ESTADO, LOCAL), 
+    	remove_objeto(OBJETO, ESTADO, LOCAL),
+        assertz(objeto(OBJETO, ESTADO, LOCAL)).
+        
+% UTILITARIOS
+remove_objeto(OBJETO, ESTADO, LOCAL) :- estadoinvertido(ESTADO, ESTADOINV), 
+        retract(objeto(OBJETO, ESTADOINV, LOCAL)); 
+    	retract(objeto(OBJETO, ESTADO, LOCAL)).
+
+estadoinvertido(ESTADO, ESTADOINV) :- ESTADO == ligado, ESTADOINV = desligado; 
+        ESTADO == desligado, ESTADOINV = ligado;
+    	ESTADO == trancado, ESTADOINV = destrancado;
+    	ESTADO == destrancado, ESTADOINV = trancado;
+        ESTADO == fechado, ESTADOINV = aberto;
+    	ESTADO == aberto, ESTADOINV = fechado.
