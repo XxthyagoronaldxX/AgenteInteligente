@@ -58,9 +58,12 @@ estado(janela, trancado, sala).
 estado(janela, trancado, cozinha).
 
 % LISTAR OBJETOS QUE ESTAO LIGADOS E DESLIGADOS. [Jaime]
-objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo).
-
+objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo); estado(Objeto, trancado, Comodo).
 listarLigados(Lista) :- findall([Objeto, Comodo], objetosLigados(Objeto, Comodo), Lista).
+
+objetosDesligados(Objeto, Comodo) :- estado(Objeto, desligado, Comodo); estado(Objeto, destrancado, Comodo).
+listarDesligados(Lista) :- findall([Objeto, Comodo], objetosDesligados(Objeto, Comodo), Lista).
+
 
 evento().
 
