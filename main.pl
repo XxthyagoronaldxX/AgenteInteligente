@@ -28,7 +28,8 @@
 % SKILL DE HABILIDADES DO AGENTE INTELIGENTE. [Ramon]
 % ESCUTAR EVENTO DE OBJETOS. (DEFINIR METRICAS)	[Thyago]	
 
-dynamic estado/3.
+:- dynamic estado/3.
+
 estado(lampada, ligado, quarto_1).
 estado(lampada, ligado, quarto_2).
 estado(lampada, ligado, quarto_3).
@@ -42,9 +43,9 @@ estado(tv, ligado, quarto_2).
 estado(arcodicionado, ligado, quarto_1).
 estado(arcodicionado, ligado, quarto_2).
 estado(arcodicionado, ligado, quarto_3).
-estado(cortinainteligente, ligado, quarto_1).
-estado(cortinainteligente, ligado, quarto_2).
-estado(cortinainteligente, ligado, quarto_3).
+estado(cortinainteligente, aberto, quarto_1).
+estado(cortinainteligente, aberto, quarto_2).
+estado(cortinainteligente, aberto, quarto_3).
 estado(computador, ligado, quarto_1).
 estado(computador, ligado, quarto_2).
 estado(computador, ligado, quarto_3).
@@ -56,14 +57,22 @@ estado(janela, trancado, quarto_2).
 estado(janela, trancado, quarto_3).
 estado(janela, trancado, sala).
 estado(janela, trancado, cozinha).
+estado(videoGame, desligado, quarto_1).
 
 % LISTAR OBJETOS QUE ESTAO LIGADOS E DESLIGADOS. [Jaime]
-objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo); estado(Objeto, trancado, Comodo).
-listarLigados(Lista) :- findall([Objeto, Comodo], objetosLigados(Objeto, Comodo), Lista).
+objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo); estado(Objeto, trancado, Comodo); estado(Objeto, aberto, Comodo).
+objetosDesligados(Objeto, Comodo) :- estado(Objeto, desligado, Comodo); estado(Objeto, destrancado, Comodo), estado(Objeto, fechado, Comodo).
 
-objetosDesligados(Objeto, Comodo) :- estado(Objeto, desligado, Comodo); estado(Objeto, destrancado, Comodo).
-listarDesligados(Lista) :- findall([Objeto, Comodo], objetosDesligados(Objeto, Comodo), Lista).
-
+% SKILL GAMER. [Jaime]
+skill(gamer) :- retract(estado(lampada, _, quarto_1)),
+                assertz(estado(lampada, desligado, quarto_1)),
+                retract(estado(cortinainteligente, _, quarto_1)),
+                assertz(estado(cortinainteligente, fechado, quarto_1)),
+                retract(estado(arcodicionado, _, quarto_1)),
+                assertz(estado(arcodicionado, ligado, quarto_1)),
+                retract(estado(videoGame, _, quarto_1)),
+                assertz(estado(videoGame, ligado, quarto_1)).
+                          
 
 evento().
 
