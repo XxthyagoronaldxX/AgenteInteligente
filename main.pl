@@ -76,8 +76,17 @@ skill(gamer) :- retract(estado(lampada, _, quarto_1)),
                 retract(estado(arcodicionado, _, quarto_1)),
                 assertz(estado(arcodicionado, ligado, quarto_1)),
                 retract(estado(videoGame, _, quarto_1)),
-                assertz(estado(videoGame, ligado, quarto_1)).
+                assertz(estado(videoGame, ligado, quarto_1)),
+                write('Rotina Realizada.').
                           
+% PERSONALIZAÇAO DE SKILL. [Jaime]
+personalizarSkill :- listing(skill),
+                     write('------------------------------------------'),
+                     write('Insira o nome da Skill que deseja editar: '),
+                     read(Skill),
+                     retract(skill(Skill)),
+                     personalizarSkill(Skill).
+                     
 
 evento().
 
