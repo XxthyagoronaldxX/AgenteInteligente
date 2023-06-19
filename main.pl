@@ -60,8 +60,13 @@ estado(janela, trancado, cozinha).
 estado(videoGame, desligado, quarto_1).
 
 % LISTAR OBJETOS QUE ESTAO LIGADOS E DESLIGADOS. [Jaime]
-objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo); estado(Objeto, trancado, Comodo); estado(Objeto, aberto, Comodo).
-objetosDesligados(Objeto, Comodo) :- estado(Objeto, desligado, Comodo); estado(Objeto, destrancado, Comodo), estado(Objeto, fechado, Comodo).
+objetosLigados(Objeto, Comodo) :- estado(Objeto, ligado, Comodo);
+                                  estado(Objeto, trancado, Comodo);
+                                  estado(Objeto, aberto, Comodo).
+
+objetosDesligados(Objeto, Comodo) :- estado(Objeto, desligado, Comodo);
+                                     estado(Objeto, destrancado, Comodo);
+                                     estado(Objeto, fechado, Comodo).
 
 % SKILL GAMER. [Jaime]
 skill(gamer) :- retract(estado(lampada, _, quarto_1)),
