@@ -1,127 +1,123 @@
-% OBJETOS:
-% 
-% Luzes em cada cômodo. x
-% SmartTV apenas na sala de estar. x 
-% Ar-condicionado nos 3 quartos e na sala de estar. x
-% Cortinas motorizadas em todos os cômodos. x
-% Computador nos 3 quartos. x
-% Aparelho de som na sala e no quarto 1. x
-% Geladeira e fogão na cozinha. EXTRA
-% Fechadura inteligente nas portas e janelas. x
+% ANDARID - ANDAR - DISPLAY
+andar(1, "Andar 1").
 
+% COMODOID - COMODO - ANDARID
+comodo(1, "Quarto 1", 1).
+comodo(2, "Quarto 2", 1).
+comodo(3, "Quarto 3", 1).
+comodo(4, "Banheiro", 1).
+comodo(5, "Cozinha", 1).
+comodo(6, "Varanda", 1).
+comodo(7, "Corredor", 1).
+comodo(8, "Sala", 1).
 
-% USECASES:
-%
-% LISTAR OBJETOS QUE ESTAO LIGADOS E DESLIGADOS. [Jaime]
-% INFERIR QUE O USUARIO ESTA DORMINDO OU ACORDADO. (COM BASE NO ESTADO DOS OBJETOS) [Alexandre]
-% SKILL DORMIR. [Ramon]
-% SKILL FORA DE CASA. [Thyago] X
-% SKILL GAMER. [Jaime]
-% SKILL FAXINA. [Alexandre]
+% OBJETOID - OBJETO
+objeto(1, "Lampada").
+objeto(2, "Tv").
+objeto(3, "Arcodicionado").
+objeto(4, "Cortina Inteligente").
+objeto(5, "Computador").
+objeto(6, "Aparelho de som").
+objeto(7, "Fechadura de porta").
+objeto(8, "Janela").
 
-% POSSIVEL IDEAI:
-%
-% PERSONALIZAÇAO DE SKILL. [Jaime]
-% PERSONALIZAÇAO DE COMODO DA CASA. (CRUD) [Thyago]
-% INTERAGIR DIRETAMENTE COM O AGENTE INTELIGENTE. (Que dia e hoje? Que horas sao? Vai chover hoje?) [Ramon]
-% PERSONALIZAÇAO DE SKILL ++. (EDITAR SKILLS) [Alexandre]
-% SKILL DE HABILIDADES DO AGENTE INTELIGENTE. [Ramon]
-% ESCUTAR EVENTO DE OBJETOS. (DEFINIR METRICAS)	[Thyago]	
+% OBJETO - ESTADO - COMODOID
+:- dynamic estado/3.	
+estado(1, ligado, 1).
+estado(1, ligado, 2).
+estado(1, ligado, 3).
+estado(1, ligado, 4).
+estado(1, ligado, 5).
+estado(1, ligado, 8).
+estado(1, ligado, 7).
+estado(1, ligado, 6).
+estado(2, ligado, 8).
+estado(2, ligado, 2).
+estado(3, ligado, 1).
+estado(3, ligado, 2).
+estado(3, ligado, 3).
+estado(4, aberto, 1).
+estado(4, aberto, 2).
+estado(4, aberto, 3).
+estado(5, ligado, 1).
+estado(5, ligado, 2).
+estado(5, ligado, 3).
+estado(6, ligado, 1).
+estado(6, ligado, 8).
+estado(7, trancado, 8).
+estado(8, trancado, 1).
+estado(8, trancado, 2).
+estado(8, trancado, 3).
+estado(8, trancado, 8).
+estado(8, trancado, 5).
 
-:- dynamic objeto/4.	
-objeto(lampada, ligado, quarto_1, andar1).
-objeto(lampada, ligado, quarto_2, andar1).
-objeto(lampada, ligado, quarto_3, andar1).
-objeto(lampada, ligado, banheiro, andar1).
-objeto(lampada, ligado, cozinha, andar1).
-objeto(lampada, ligado, sala, andar1).
-objeto(lampada, ligado, corredor, andar1).
-objeto(lampada, ligado, varanda, andar1).
-objeto(tv, ligado, sala, andar1).
-objeto(tv, ligado, quarto_2, andar1).
-objeto(arcodicionado, ligado, quarto_1, andar1).
-objeto(arcodicionado, ligado, quarto_2, andar1).
-objeto(arcodicionado, ligado, quarto_3, andar1).
-objeto(cortinainteligente, aberto, quarto_1, andar1).
-objeto(cortinainteligente, aberto, quarto_2, andar1).
-objeto(cortinainteligente, aberto, quarto_3, andar1).
-objeto(computador, ligado, quarto_1, andar1).
-objeto(computador, ligado, quarto_2, andar1).
-objeto(computador, ligado, quarto_3, andar1).
-objeto(aparelhodesom, ligado, quarto_1, andar1).
-objeto(aparelhodesom, ligado, sala, andar1).
-objeto(fechaduraporta, trancado, sala, andar1).
-objeto(janela, trancado, quarto_1, andar1).
-objeto(janela, trancado, quarto_2, andar1).
-objeto(janela, trancado, quarto_3, andar1).
-objeto(janela, trancado, sala, andar1).
-objeto(janela, trancado, cozinha, andar1).
+% MODOID - DISPLAY
+:- dynamic skill_mode_type/2.
+skill_mode_type(1, "Fora de casa").
+skill_mode_type(2, "Dormir").
 
-:- dynamic skill/5.
-skill(foradecasa, lampada, desligado, quarto_1, andar1).
-skill(foradecasa, lampada, desligado, quarto_2, andar1).
-skill(foradecasa, lampada, desligado, quarto_3, andar1).
-skill(foradecasa, lampada, desligado, banheiro, andar1).
-skill(foradecasa, lampada, desligado, cozinha, andar1).
-skill(foradecasa, lampada, desligado, sala, andar1).
-skill(foradecasa, lampada, desligado, corredor, andar1).
-skill(foradecasa, lampada, desligado, varanda, andar1).
-skill(foradecasa, tv, desligado, sala, andar1).
-skill(foradecasa, tv, desligado, quarto_2, andar1).
-skill(foradecasa, arcodicionado, desligado, quarto_1, andar1).
-skill(foradecasa, arcodicionado, desligado, quarto_2, andar1).
-skill(foradecasa, arcodicionado, desligado, quarto_3, andar1).
-skill(foradecasa, cortinainteligente, fechado, quarto_1, andar1).
-skill(foradecasa, cortinainteligente, fechado, quarto_2, andar1).
-skill(foradecasa, cortinainteligente, fechado, quarto_3, andar1).
-skill(foradecasa, computador, desligado, quarto_1, andar1).
-skill(foradecasa, computador, desligado, quarto_2, andar1).
-skill(foradecasa, computador, desligado, quarto_3, andar1).
-skill(foradecasa, aparelhodesom, desligado, quarto_1, andar1).
-skill(foradecasa, aparelhodesom, desligado, sala, andar1).
-skill(foradecasa, fechaduraporta, trancado, sala, andar1).
-skill(foradecasa, janela, trancado, quarto_1, andar1).
-skill(foradecasa, janela, trancado, quarto_2, andar1).
-skill(foradecasa, janela, trancado, quarto_3, andar1).
-skill(foradecasa, janela, trancado, sala, andar1).
-skill(foradecasa, janela, trancado, cozinha, andar1). 
+% MODOID - OBJETO - NOVOESTADO - COMODOID
+:- dynamic skill_mode/4.
+skill_mode(1, 1, desligado, 1).
+skill_mode(1, 1, desligado, 2).
+skill_mode(1, 1, desligado, 3).
+skill_mode(1, 1, desligado, 4).
+skill_mode(1, 1, desligado, 5).
+skill_mode(1, 1, desligado, 8).
+skill_mode(1, 1, desligado, 7).
+skill_mode(1, 1, desligado, 6).
+skill_mode(1, 2, desligado, 8).
+skill_mode(1, 2, desligado, 2).
+skill_mode(1, 3, desligado, 1).
+skill_mode(1, 3, desligado, 2).
+skill_mode(1, 3, desligado, 3).
+skill_mode(1, 4, fechado, 1).
+skill_mode(1, 4, fechado, 2).
+skill_mode(1, 4, fechado, 3).
+skill_mode(1, 5, desligado, 1).
+skill_mode(1, 5, desligado, 2).
+skill_mode(1, 5, desligado, 3).
+skill_mode(1, 6, desligado, 1).
+skill_mode(1, 6, desligado, 8).
+skill_mode(1, 7, trancado, 8).
+skill_mode(1, 8, trancado, 1).
+skill_mode(1, 8, trancado, 2).
+skill_mode(1, 8, trancado, 3).
+skill_mode(1, 8, trancado, 8).
+skill_mode(1, 8, trancado, 5). 
 
-skill(dormir, lampada, desligado, quarto_1, andar1).
-skill(dormir, lampada, desligado, quarto_2, andar1).
-skill(dormir, lampada, desligado, quarto_3, andar1).
-skill(dormir, lampada, desligado, banheiro, andar1).
-skill(dormir, lampada, desligado, cozinha, andar1).
-skill(dormir, lampada, desligado, sala, andar1).
-skill(dormir, lampada, desligado, corredor, andar1).
-skill(dormir, lampada, desligado, varanda, andar1).
-skill(dormir, tv, desligado, sala, andar1).
-skill(dormir, tv, desligado, quarto_2, andar1).
-skill(dormir, arcodicionado, ligado, quarto_1, andar1).
-skill(dormir, arcodicionado, ligado, quarto_2, andar1).
-skill(dormir, arcodicionado, ligado, quarto_3, andar1).
-skill(dormir, cortinainteligente, fechado, quarto_1, andar1).
-skill(dormir, cortinainteligente, fechado, quarto_2, andar1).
-skill(dormir, cortinainteligente, fechado, quarto_3, andar1).
-skill(dormir, computador, desligado, quarto_1, andar1).
-skill(dormir, computador, desligado, quarto_2, andar1).
-skill(dormir, computador, desligado, quarto_3, andar1).
-skill(dormir, aparelhodesom, desligado, quarto_1, andar1).
-skill(dormir, aparelhodesom, desligado, sala, andar1).
-skill(dormir, fechaduraporta, trancado, sala, andar1).
-skill(dormir, janela, trancado, quarto_1, andar1).
-skill(dormir, janela, trancado, quarto_2, andar1).
-skill(dormir, janela, trancado, quarto_3, andar1).
-skill(dormir, janela, trancado, sala, andar1).
-skill(dormir, janela, trancado, cozinha, andar1). 
-
-:- dynamic skill/2.
-skill(foradecasa, "Fora de casa").
-skill(dormir, "Dormir").
+skill_mode(2, 1, desligado, 1).
+skill_mode(2, 1, desligado, 2).
+skill_mode(2, 1, desligado, 3).
+skill_mode(2, 1, desligado, 4).
+skill_mode(2, 1, desligado, 5).
+skill_mode(2, 1, desligado, 8).
+skill_mode(2, 1, desligado, 7).
+skill_mode(2, 1, desligado, 6).
+skill_mode(2, 2, desligado, 8).
+skill_mode(2, 2, desligado, 2).
+skill_mode(2, 3, ligado, 1).
+skill_mode(2, 3, ligado, 2).
+skill_mode(2, 3, ligado, 3).
+skill_mode(2, 4, fechado, 1).
+skill_mode(2, 4, fechado, 2).
+skill_mode(2, 4, fechado, 3).
+skill_mode(2, 5, desligado, 1).
+skill_mode(2, 5, desligado, 2).
+skill_mode(2, 5, desligado, 3).
+skill_mode(2, 6, desligado, 1).
+skill_mode(2, 6, desligado, 8).
+skill_mode(2, 7, trancado, 8).
+skill_mode(2, 8, trancado, 1).
+skill_mode(2, 8, trancado, 2).
+skill_mode(2, 8, trancado, 3).
+skill_mode(2, 8, trancado, 8).
+skill_mode(2, 8, trancado, 5). 
 
 % MAIN
 main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("1 - Lista Objetos."),
-	writeln("2 - Ativar skill de modo."),
+	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
 	read(EVENT),
@@ -132,34 +128,58 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 evento(1) :- acao_lista_objetos().
 evento(2) :- acao_usar_skill().
 evento(3) :- acao_lista_eletronicos_ligados().
+evento(4) :- acao_robo_limpador().
+
+% ACAO - ROBO LIMPADOR
+acao_robo_limpador() :- findall([ANDARID, ANDAR], andar(ANDARID, ANDAR), LISTA_ANDARES),
+    acao_mostra_andares(LISTA_ANDARES, 1),
+    read(OPC),
+    acao_seleciona_andar(LISTA_ANDARES, OPC, 1).
+
+acao_mostra_andares([], _) :- !.
+acao_mostra_andares([[_, ANDAR] | ANDARES], CONT) :- AUXCONT is CONT + 1, 
+    format("~w - ~w\n", [CONT, ANDAR]),
+    acao_mostra_andares(ANDARES, AUXCONT).
+
+acao_seleciona_andar([], _, _) :- !.
+acao_seleciona_andar(_, OPC, _) :- OPC < 1, !.
+acao_seleciona_andar([[ANDARID, _] | _], OPC, OPC) :- acao_limpar_andar(ANDARID), !.
+acao_seleciona_andar([_ | ANDARES], OPC, CONT) :- AUXCONT is CONT + 1, acao_seleciona_andar(ANDARES, OPC, AUXCONT).
+
+acao_limpar_andar(ANDARID) :- findall([LOCAL], comodo(_, LOCAL, ANDARID), LISTA_COMODOS),
+    acao_limpar_comodos(LISTA_COMODOS).
+    
+acao_limpar_comodos([]) :- !.
+acao_limpar_comodos([COMODO | COMODOS]) :- format("Limpando - ~w.\n", [COMODO]), acao_limpar_comodos(COMODOS).
 
 % ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
-acao_lista_eletronicos_ligados() :- findall([NOME, LOCAL, ANDAR], objeto(NOME, ligado, LOCAL, ANDAR), LISTA_ELETRONICOS_LIGADOS),
+acao_lista_eletronicos_ligados() :- findall([NOME, LOCAL, ANDAR], objeto_comodo(NOME, ligado, LOCAL, ANDAR), LISTA_ELETRONICOS_LIGADOS),
 	writeln(LISTA_ELETRONICOS_LIGADOS).
 
 % ACAO - LISTA OBJETOS
-acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS), 
+acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto_comodo(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS), 
 	writeln(LISTA_OBJETOS).
 
-% ACAO - EXECUTAR SKILL
-acao_usar_skill() :- writeln("=== Selecionar Skill ==="),
-    findall([SKILL, DISPLAY], skill(SKILL, DISPLAY), SKILLS),
-    acao_mostra_skills(SKILLS, 1),
+% ACAO - SELECIONAR MODO
+acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
+    findall([MODOID, MODO], skill_mode_type(MODOID, MODO), MODOS),
+    acao_mostra_modos(MODOS, 1),
 	read(OPC), 
-	acao_seleciona_skill(OPC, SKILLS, 1).
+	acao_seleciona_modo(OPC, MODOS, 1).
 
-acao_mostra_skills([], _) :- !.
-acao_mostra_skills([[_, DISPLAY] | SKILLS], INDEX) :- write(INDEX), write(" - "), writeln(DISPLAY), 
+acao_mostra_modos([], _) :- !.
+acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- write(INDEX), write(" - "), writeln(MODO), 
     AUXINDEX is INDEX + 1,
-    acao_mostra_skills(SKILLS, AUXINDEX).
+    acao_mostra_modos(MODOS, AUXINDEX).
 
-acao_seleciona_skill(OPC, _, _) :- OPC < 1, !.
-acao_seleciona_skill(_, [], _) :- !.
-acao_seleciona_skill(OPC, [[SKILL, _] | _], OPC) :- acao_executar_skill(SKILL), !.
-acao_seleciona_skill(OPC, [_ | SKILLS], CONT) :- OPC =\= CONT, AUXCONT is CONT + 1, acao_seleciona_skill(OPC, SKILLS, AUXCONT).
+acao_seleciona_modo(OPC, _, _) :- OPC < 1, !.
+acao_seleciona_modo(_, [], _) :- !.
+acao_seleciona_modo(OPC, [[MODOID, _] | _], OPC) :- acao_executar_modo(MODOID), !.
+acao_seleciona_modo(OPC, [_ | MODOS], CONT) :- AUXCONT is CONT + 1, acao_seleciona_modo(OPC, MODOS, AUXCONT).
 
-acao_executar_skill(SKILL) :- findall([OBJETO, ESTADO, LOCAL, ANDAR], skill(SKILL, OBJETO, ESTADO, LOCAL, ANDAR), RESULT), 
-	remove_objetos(RESULT), adiciona_objetos(RESULT).
+acao_executar_modo(MODOID) :- findall([OBJETOID, NOVOESTADO, COMODOID], skill_mode(MODOID, OBJETOID, NOVOESTADO, COMODOID), RESULT), 
+	remove_estados(RESULT), 
+    adiciona_estados(RESULT).
 
 % UTILITARIOS
 estadoinvertido(ligado, desligado).
@@ -169,14 +189,19 @@ estadoinvertido(destrancado, trancado).
 estadoinvertido(fechado, aberto).
 estadoinvertido(aberto, fechado).
 
-adiciona_objetos([]) :- !.
-adiciona_objetos([OBJETO | OBJETOS]) :- adiciona_objeto(OBJETO), adiciona_objetos(OBJETOS).
+objeto_comodo(OBJETO, ESTADO, LOCAL, ANDAR) :- objeto(OBJETOID, OBJETO), 
+    estado(OBJETOID, ESTADO, COMODOID), 
+	comodo(COMODOID, LOCAL, ANDARID), 
+	andar(ANDARID, ANDAR).
 
-adiciona_objeto([OBJETO, ESTADO, LOCAL, ANDAR]) :- assertz(objeto(OBJETO, ESTADO, LOCAL, ANDAR)).
+adiciona_estados([]) :- !.
+adiciona_estados([ESTADO | ESTADOS]) :- adiciona_estado(ESTADO), adiciona_estados(ESTADOS).
+
+adiciona_estado([OBJETOID, ESTADO, COMODOID]) :- assertz(estado(OBJETOID, ESTADO, COMODOID)).
     
-remove_objetos([]) :- !.
-remove_objetos([OBJETO | OBJETOS]) :- remove_objeto(OBJETO), remove_objetos(OBJETOS).
+remove_estados([]) :- !.
+remove_estados([ESTADO | ESTADOS]) :- remove_estado(ESTADO), remove_estados(ESTADOS).
 
-remove_objeto([OBJETO, ESTADO, LOCAL, ANDAR]) :- estadoinvertido(ESTADO, ESTADOINV),
-	retract(objeto(OBJETO, ESTADOINV, LOCAL, ANDAR)); 
-    retract(objeto(OBJETO, ESTADO, LOCAL, ANDAR)).
+remove_estado([OBJETOID, ESTADO, COMODOID]) :- estadoinvertido(ESTADO, ESTADOINV),
+	retract(estado(OBJETOID, ESTADOINV, COMODOID)); 
+    retract(estado(OBJETOID, ESTADO, COMODOID)).
