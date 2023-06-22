@@ -1,4 +1,4 @@
-% ANDARID - ANDAR
+% ANDARID - ANDAR - DISPLAY
 andar(1, "Andar 1").
 
 % COMODOID - COMODO - ANDARID
@@ -51,7 +51,7 @@ estado(8, trancado, 3).
 estado(8, trancado, 8).
 estado(8, trancado, 5).
 
-% MODOID - MODO
+% MODOID - DISPLAY
 :- dynamic skill_mode_type/2.
 skill_mode_type(1, "Fora de casa").
 skill_mode_type(2, "Dormir").
