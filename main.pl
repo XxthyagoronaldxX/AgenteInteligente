@@ -120,6 +120,7 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
+    writeln("5 - Adiciona um novo objeto a um comodo."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
@@ -129,6 +130,17 @@ evento(1) :- acao_lista_objetos().
 evento(2) :- acao_usar_skill().
 evento(3) :- acao_lista_eletronicos_ligados().
 evento(4) :- acao_robo_limpador().
+
+% ACAO - ADICIONA UM NOVO OBJETO A UM COMODO
+acao_adiciona_novo_objeto_comodo() :- writeln("=== INFORME O COMODO ==="),
+    findall(COMODO, comodo(_, COMODO, _), COMODOS),
+    acao_mostra_comodos(COMODOS, 1),
+    read(_).
+
+acao_mostra_comodos([], _) :- !.
+acao_mostra_comodos([COMODO | COMODOS], CONT) :- format("~w - ~w.\n", [CONT, COMODO]),
+    AUXCONT is CONT + 1,
+    acao_mostra_comodos(COMODOS, AUXCONT).
 
 % ACAO - ROBO LIMPADOR
 acao_robo_limpador() :- findall([ANDARID, ANDAR], andar(ANDARID, ANDAR), LISTA_ANDARES),
