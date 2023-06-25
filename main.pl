@@ -1,3 +1,8 @@
+% ADICIONAR SKILL DO RAMON DATA E HORA
+% LISTAR OBJETOS ATIVOS JAIME
+% FIX: ARRUMAR SKILL GAMER
+
+
 % ANDARID - ANDAR - DISPLAY
 andar(1, "Andar 1").
 
@@ -20,6 +25,7 @@ objeto(5, "Computador").
 objeto(6, "Aparelho de som").
 objeto(7, "Fechadura de porta").
 objeto(8, "Janela").
+objeto(9, "Videogame").
 
 % OBJETO - ESTADO - COMODOID
 :- dynamic estado/3.	
@@ -50,11 +56,13 @@ estado(8, trancado, 2).
 estado(8, trancado, 3).
 estado(8, trancado, 8).
 estado(8, trancado, 5).
+estado(9, ligado, 1).
 
 % MODOID - DISPLAY
 :- dynamic skill_mode_type/2.
 skill_mode_type(1, "Fora de casa").
 skill_mode_type(2, "Dormir").
+skill_mode_type(3, "Gamer").
 
 % MODOID - OBJETO - NOVOESTADO - COMODOID
 :- dynamic skill_mode/4.
@@ -84,7 +92,8 @@ skill_mode(1, 8, trancado, 1).
 skill_mode(1, 8, trancado, 2).
 skill_mode(1, 8, trancado, 3).
 skill_mode(1, 8, trancado, 8).
-skill_mode(1, 8, trancado, 5). 
+skill_mode(1, 8, trancado, 5).
+skill_mode(1, 9, desligado, 1). 
 
 skill_mode(2, 1, desligado, 1).
 skill_mode(2, 1, desligado, 2).
@@ -112,7 +121,15 @@ skill_mode(2, 8, trancado, 1).
 skill_mode(2, 8, trancado, 2).
 skill_mode(2, 8, trancado, 3).
 skill_mode(2, 8, trancado, 8).
-skill_mode(2, 8, trancado, 5). 
+skill_mode(2, 8, trancado, 5).
+skill_mode(2, 9, desligado, 1). 
+
+skill_mode(3, 1, desligado, 1).
+skill_mode(3, 2, ligado, 1).
+skill_mode(3, 3, ligado, 1).
+skill_mode(3, 4, fechado, 1).
+skill_mode(3, 5, ligado, 1).
+skill_mode(3, 9, ligado, 1).
 
 % MAIN
 main :- writeln("=== AGENTE INTELIGENTE ==="),
@@ -120,7 +137,6 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
-    writeln("5 - Adiciona um novo objeto a um comodo."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
@@ -130,17 +146,6 @@ evento(1) :- acao_lista_objetos().
 evento(2) :- acao_usar_skill().
 evento(3) :- acao_lista_eletronicos_ligados().
 evento(4) :- acao_robo_limpador().
-
-% ACAO - ADICIONA UM NOVO OBJETO A UM COMODO
-acao_adiciona_novo_objeto_comodo() :- writeln("=== INFORME O COMODO ==="),
-    findall(COMODO, comodo(_, COMODO, _), COMODOS),
-    acao_mostra_comodos(COMODOS, 1),
-    read(_).
-
-acao_mostra_comodos([], _) :- !.
-acao_mostra_comodos([COMODO | COMODOS], CONT) :- format("~w - ~w.\n", [CONT, COMODO]),
-    AUXCONT is CONT + 1,
-    acao_mostra_comodos(COMODOS, AUXCONT).
 
 % ACAO - ROBO LIMPADOR
 acao_robo_limpador() :- findall([ANDARID, ANDAR], andar(ANDARID, ANDAR), LISTA_ANDARES),
@@ -166,11 +171,11 @@ acao_limpar_comodos([COMODO | COMODOS]) :- format("Limpando - ~w.\n", [COMODO]),
 
 % ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
 acao_lista_eletronicos_ligados() :- findall([NOME, LOCAL, ANDAR], objeto_comodo(NOME, ligado, LOCAL, ANDAR), LISTA_ELETRONICOS_LIGADOS),
-	writeln(LISTA_ELETRONICOS_LIGADOS).
+	mostra_lista(LISTA_ELETRONICOS_LIGADOS).
 
 % ACAO - LISTA OBJETOS
 acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto_comodo(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS), 
-	writeln(LISTA_OBJETOS).
+	mostra_lista(LISTA_OBJETOS).
 
 % ACAO - SELECIONAR MODO
 acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
@@ -180,7 +185,7 @@ acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
 	acao_seleciona_modo(OPC, MODOS, 1).
 
 acao_mostra_modos([], _) :- !.
-acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- write(INDEX), write(" - "), writeln(MODO), 
+acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w", [INDEX, MODO]),
     AUXINDEX is INDEX + 1,
     acao_mostra_modos(MODOS, AUXINDEX).
 
@@ -205,6 +210,9 @@ objeto_comodo(OBJETO, ESTADO, LOCAL, ANDAR) :- objeto(OBJETOID, OBJETO),
     estado(OBJETOID, ESTADO, COMODOID), 
 	comodo(COMODOID, LOCAL, ANDARID), 
 	andar(ANDARID, ANDAR).
+
+mostra_lista([]) :- !.
+mostra_lista([HEAD | TAIL]) :- writeln(HEAD), mostra_lista(TAIL).
 
 adiciona_estados([]) :- !.
 adiciona_estados([ESTADO | ESTADOS]) :- adiciona_estado(ESTADO), adiciona_estados(ESTADOS).
