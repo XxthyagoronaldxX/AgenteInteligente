@@ -51,6 +51,7 @@ estado(8, trancado, 2).
 estado(8, trancado, 3).
 estado(8, trancado, 8).
 estado(8, trancado, 5).
+estado(9, ligado, 1)
 
 % MODOID - DISPLAY
 :- dynamic skill_mode_type/2.
@@ -86,7 +87,8 @@ skill_mode(1, 8, trancado, 1).
 skill_mode(1, 8, trancado, 2).
 skill_mode(1, 8, trancado, 3).
 skill_mode(1, 8, trancado, 8).
-skill_mode(1, 8, trancado, 5). 
+skill_mode(1, 8, trancado, 5).
+skill_mode(1, 9, desligado, 1). 
 
 skill_mode(2, 1, desligado, 1).
 skill_mode(2, 1, desligado, 2).
@@ -114,7 +116,8 @@ skill_mode(2, 8, trancado, 1).
 skill_mode(2, 8, trancado, 2).
 skill_mode(2, 8, trancado, 3).
 skill_mode(2, 8, trancado, 8).
-skill_mode(2, 8, trancado, 5). 
+skill_mode(2, 8, trancado, 5).
+skill_mode(2, 9, desligado, 1). 
 
 skill_mode(3, 1, desligado, 1).
 skill_mode(3, 2, ligado, 1).
