@@ -1,4 +1,3 @@
-% ADICIONAR SKILL DO RAMON DATA E HORA
 % LISTAR OBJETOS ATIVOS JAIME
 % FIX: ARRUMAR SKILL GAMER
 
@@ -38,6 +37,7 @@ estado(1, ligado, 7).
 estado(1, ligado, 6).
 estado(2, ligado, 8).
 estado(2, ligado, 2).
+estado(2, ligado, 1).
 estado(3, ligado, 1).
 estado(3, ligado, 2).
 estado(3, ligado, 3).
@@ -136,6 +136,10 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
+    writeln("5 - Que horas são?"),
+    writeln("6 - Que dia é hoje?"),
+    writeln("7 - Lista objetos ativados."), 
+    writeln("8 - Lista objetos desativados."), 
 	read(EVENT),
 	evento(EVENT),
 	main. 
@@ -145,6 +149,25 @@ evento(1) :- acao_lista_objetos().
 evento(2) :- acao_usar_skill().
 evento(3) :- acao_lista_eletronicos_ligados().
 evento(4) :- acao_robo_limpador().
+evento(5) :- acao_horas().
+evento(6) :- acao_dia().
+evento(7) :- acao_lista_objetos_on().
+evento(8) :- acao_lista_objetos_off().
+
+% ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
+acao_lista_objetos_on() :- findall([NOME, LOCAL, ANDAR], (objeto_comodo(NOME, ligado, LOCAL, ANDAR); objeto_comodo(NOME, aberto, LOCAL, ANDAR); objeto_comodo(NOME, destrancado, LOCAL, ANDAR)), LISTA_OBJETOS_ON),
+	mostra_lista(LISTA_OBJETOS_ON).
+
+% ACAO - LISTA OBJETOS (ELETRONICOS) DESLIGADOS
+acao_lista_objetos_off() :- findall([NOME, LOCAL, ANDAR], (objeto_comodo(NOME, desligado, LOCAL, ANDAR); objeto_comodo(NOME, fechado, LOCAL, ANDAR); objeto_comodo(NOME, trancado, LOCAL, ANDAR)), LISTA_OBJETOS_OFF),
+	mostra_lista(LISTA_OBJETOS_OFF).
+
+% ACAO - DATA E HORA
+acao_horas() :- data_hora_formatada(_, HoraFormatada),
+    writeln(HoraFormatada).
+
+acao_dia() :- data_hora_formatada(DataFormatada, _),
+    writeln(DataFormatada).
 
 % ACAO - ROBO LIMPADOR
 acao_robo_limpador() :- findall([ANDARID, ANDAR], andar(ANDARID, ANDAR), LISTA_ANDARES),
@@ -184,7 +207,7 @@ acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
 	acao_seleciona_modo(OPC, MODOS, 1).
 
 acao_mostra_modos([], _) :- !.
-acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w", [INDEX, MODO]),
+acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w.\n", [INDEX, MODO]),
     AUXINDEX is INDEX + 1,
     acao_mostra_modos(MODOS, AUXINDEX).
 
@@ -205,6 +228,12 @@ estadoinvertido(destrancado, trancado).
 estadoinvertido(fechado, aberto).
 estadoinvertido(aberto, fechado).
 
+data_hora_formatada(DataFormatada, HoraFormatada) :-
+    get_time(Timestamp),
+    stamp_date_time(Timestamp, DateTime, local),
+    format_time(string(DataFormatada), '%e de %B de %Y', DateTime),
+    format_time(string(HoraFormatada), '%H:%M', DateTime).
+
 objeto_comodo(OBJETO, ESTADO, LOCAL, ANDAR) :- objeto(OBJETOID, OBJETO), 
     estado(OBJETOID, ESTADO, COMODOID), 
 	comodo(COMODOID, LOCAL, ANDARID), 
@@ -222,5 +251,5 @@ remove_estados([]) :- !.
 remove_estados([ESTADO | ESTADOS]) :- remove_estado(ESTADO), remove_estados(ESTADOS).
 
 remove_estado([OBJETOID, ESTADO, COMODOID]) :- estadoinvertido(ESTADO, ESTADOINV),
-	retract(estado(OBJETOID, ESTADOINV, COMODOID)); 
+	retract(estado(OBJETOID, ESTADOINV, COMODOID));
     retract(estado(OBJETOID, ESTADO, COMODOID)).
