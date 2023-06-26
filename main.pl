@@ -1,3 +1,7 @@
+% ADICIONAR SKILL DO RAMON DATA E HORA
+% LISTAR OBJETOS ATIVOS JAIME
+% FIX: ARRUMAR SKILL GAMER
+
 % ANDARID - ANDAR - DISPLAY
 andar(1, "Andar 1").
 
@@ -167,11 +171,11 @@ acao_limpar_comodos([COMODO | COMODOS]) :- format("Limpando - ~w.\n", [COMODO]),
 
 % ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
 acao_lista_eletronicos_ligados() :- findall([NOME, LOCAL, ANDAR], objeto_comodo(NOME, ligado, LOCAL, ANDAR), LISTA_ELETRONICOS_LIGADOS),
-	writeln(LISTA_ELETRONICOS_LIGADOS).
+	mostra_lista(LISTA_ELETRONICOS_LIGADOS).
 
 % ACAO - LISTA OBJETOS
 acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto_comodo(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS), 
-	writeln(LISTA_OBJETOS).
+	mostra_lista(LISTA_OBJETOS).
 
 % ACAO - SELECIONAR MODO
 acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
@@ -181,7 +185,7 @@ acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
 	acao_seleciona_modo(OPC, MODOS, 1).
 
 acao_mostra_modos([], _) :- !.
-acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- write(INDEX), write(" - "), writeln(MODO), 
+acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w", [INDEX, MODO]),
     AUXINDEX is INDEX + 1,
     acao_mostra_modos(MODOS, AUXINDEX).
 
@@ -206,6 +210,9 @@ objeto_comodo(OBJETO, ESTADO, LOCAL, ANDAR) :- objeto(OBJETOID, OBJETO),
     estado(OBJETOID, ESTADO, COMODOID), 
 	comodo(COMODOID, LOCAL, ANDARID), 
 	andar(ANDARID, ANDAR).
+
+mostra_lista([]) :- !.
+mostra_lista([HEAD | TAIL]) :- writeln(HEAD), mostra_lista(TAIL).
 
 adiciona_estados([]) :- !.
 adiciona_estados([ESTADO | ESTADOS]) :- adiciona_estado(ESTADO), adiciona_estados(ESTADOS).
