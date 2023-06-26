@@ -214,7 +214,7 @@ adiciona_estado([OBJETOID, ESTADO, COMODOID]) :- assertz(estado(OBJETOID, ESTADO
     
 remove_estados([]) :- !.
 remove_estados([ESTADO | ESTADOS]) :- remove_estado(ESTADO), remove_estados(ESTADOS).
-
+    
 remove_estado([OBJETOID, ESTADO, COMODOID]) :- estadoinvertido(ESTADO, ESTADOINV),
 	retract(estado(OBJETOID, ESTADOINV, COMODOID)); 
     retract(estado(OBJETOID, ESTADO, COMODOID)).
