@@ -1,6 +1,5 @@
 % ADICIONAR SKILL DO RAMON DATA E HORA
 % LISTAR OBJETOS ATIVOS JAIME
-% FIX: ARRUMAR SKILL GAMER
 
 % ANDARID - ANDAR - DISPLAY
 andar(1, "Andar 1").
@@ -137,8 +136,9 @@ skill_mode(3, 9, ligado, 1).
 main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("1 - Lista Objetos."),
 	writeln("2 - Selecionar modo."),
-	writeln("3 - Lista eletronicos ligados."),
-    writeln("4 - Usar o Robo Limpador."),
+	writeln("3 - Lista objetos ativados."), %verificar melhor descrição
+    writeln("4 - Lista objetos desativados."), %verificar melhor descrição
+    writeln("5 - Usar o Robo Limpador."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
@@ -146,8 +146,9 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 % EVENTO
 evento(1) :- acao_lista_objetos().
 evento(2) :- acao_usar_skill().
-evento(3) :- acao_lista_eletronicos_ligados().
-evento(4) :- acao_robo_limpador().
+evento(3) :- acao_lista_objetos_on().
+evento(4) :- acao_lista_objetos_off().
+evento(5) :- acao_robo_limpador().
 
 % ACAO - ROBO LIMPADOR
 acao_robo_limpador() :- findall([ANDARID, ANDAR], andar(ANDARID, ANDAR), LISTA_ANDARES),
@@ -172,8 +173,12 @@ acao_limpar_comodos([]) :- !.
 acao_limpar_comodos([COMODO | COMODOS]) :- format("Limpando - ~w.\n", [COMODO]), acao_limpar_comodos(COMODOS).
 
 % ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
-acao_lista_eletronicos_ligados() :- findall([NOME, LOCAL, ANDAR], objeto_comodo(NOME, ligado, LOCAL, ANDAR), LISTA_ELETRONICOS_LIGADOS),
-	mostra_lista(LISTA_ELETRONICOS_LIGADOS).
+acao_lista_objetos_on() :- findall([NOME, LOCAL, ANDAR], (objeto_comodo(NOME, ligado, LOCAL, ANDAR); objeto_comodo(NOME, aberto, LOCAL, ANDAR)), LISTA_OBJETOS_ON),
+	mostra_lista(LISTA_OBJETOS_ON).
+
+% ACAO - LISTA OBJETOS (ELETRONICOS) DESLIGADOS
+acao_lista_objetos_off() :- findall([NOME, LOCAL, ANDAR], (objeto_comodo(NOME, desligado, LOCAL, ANDAR); objeto_comodo(NOME, fechado, LOCAL, ANDAR); objeto_comodo(NOME, trancado, LOCAL, ANDAR)), LISTA_OBJETOS_OFF),
+	mostra_lista(LISTA_OBJETOS_OFF).
 
 % ACAO - LISTA OBJETOS
 acao_lista_objetos() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto_comodo(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS), 
