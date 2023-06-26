@@ -51,7 +51,7 @@ estado(8, trancado, 2).
 estado(8, trancado, 3).
 estado(8, trancado, 8).
 estado(8, trancado, 5).
-estado(9, ligado, 1)
+estado(9, ligado, 1).
 
 % MODOID - DISPLAY
 :- dynamic skill_mode_type/2.
@@ -132,6 +132,7 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
+    writeln("5 - Personalizar Skill."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
