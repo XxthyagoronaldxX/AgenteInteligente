@@ -38,6 +38,7 @@ estado(1, ligado, 7).
 estado(1, ligado, 6).
 estado(2, ligado, 8).
 estado(2, ligado, 2).
+estado(2, ligado, 1).
 estado(3, ligado, 1).
 estado(3, ligado, 2).
 estado(3, ligado, 3).
@@ -75,6 +76,7 @@ skill_mode(1, 1, desligado, 7).
 skill_mode(1, 1, desligado, 6).
 skill_mode(1, 2, desligado, 8).
 skill_mode(1, 2, desligado, 2).
+skill_mode(1, 2, desligado, 1).
 skill_mode(1, 3, desligado, 1).
 skill_mode(1, 3, desligado, 2).
 skill_mode(1, 3, desligado, 3).
@@ -104,6 +106,7 @@ skill_mode(2, 1, desligado, 7).
 skill_mode(2, 1, desligado, 6).
 skill_mode(2, 2, desligado, 8).
 skill_mode(2, 2, desligado, 2).
+skill_mode(2, 2, desligado, 1).
 skill_mode(2, 3, ligado, 1).
 skill_mode(2, 3, ligado, 2).
 skill_mode(2, 3, ligado, 3).
