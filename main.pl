@@ -136,7 +136,6 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
 	writeln("2 - Selecionar modo."),
 	writeln("3 - Lista eletronicos ligados."),
     writeln("4 - Usar o Robo Limpador."),
-    writeln("5 - Personalizar Skill."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
