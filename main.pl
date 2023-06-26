@@ -184,7 +184,7 @@ acao_usar_skill() :- writeln("=== Selecionar Modo ==="),
 	acao_seleciona_modo(OPC, MODOS, 1).
 
 acao_mostra_modos([], _) :- !.
-acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w", [INDEX, MODO]),
+acao_mostra_modos([[_, MODO] | MODOS], INDEX) :- format("~w - ~w.\n", [INDEX, MODO]),
     AUXINDEX is INDEX + 1,
     acao_mostra_modos(MODOS, AUXINDEX).
 
