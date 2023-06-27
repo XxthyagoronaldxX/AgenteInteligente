@@ -1,6 +1,3 @@
-% LISTAR OBJETOS ATIVOS JAIME
-% FIX: ARRUMAR SKILL GAMER
-
 % ANDARID - ANDAR - DISPLAY
 andar(1, "Andar 1").
 
@@ -140,6 +137,7 @@ main :- writeln("=== AGENTE INTELIGENTE ==="),
     writeln("6 - Que dia é hoje?"),
     writeln("7 - Lista objetos ativados."), 
     writeln("8 - Lista objetos desativados."), 
+    writeln("9 - Mudar o estado de um objeto."),
 	read(EVENT),
 	evento(EVENT),
 	main. 
@@ -153,6 +151,32 @@ evento(5) :- acao_horas().
 evento(6) :- acao_dia().
 evento(7) :- acao_lista_objetos_on().
 evento(8) :- acao_lista_objetos_off().
+evento(9) :- acao_muda_estado_objeto().
+
+% ACAO - MUDA ESTADO DE UM OBJETO
+acao_muda_estado_objeto() :- findall([NOME, ESTADO, LOCAL, ANDAR], objeto_comodo(NOME, ESTADO, LOCAL, ANDAR), LISTA_OBJETOS),
+    writeln("=== INFORME O OBJETO PARA ALTERNAR O ESTADO === (0 - Voltar.)"),
+    mostra_objetos(LISTA_OBJETOS, 1),
+    read(OPC),
+    OPC =\= 0,
+    seleciona_objeto(LISTA_OBJETOS, OPC, 1, OBJETO),
+    alternar_estado_objeto(OBJETO).
+
+mostra_objetos([], _) :- !.
+mostra_objetos([[NOME, ESTADO, LOCAL, ANDAR] | ESTADOS], INDEX) :- AUXINDEX is INDEX + 1,
+    format("~w - ~w LOCAL: ~w_~w [~w].\n", [INDEX, NOME, LOCAL, ANDAR, ESTADO]),
+    mostra_objetos(ESTADOS, AUXINDEX).
+
+seleciona_objeto([], _, _, _) :- !.
+seleciona_objeto([OBJETO | _], OPC, OPC, OBJETO) :- !.
+seleciona_objeto([_ | OBJETOS], OPC, INDEX, OBJETO) :- AUXINDEX is INDEX + 1, 
+    seleciona_objeto(OBJETOS, OPC, AUXINDEX, OBJETO).
+
+alternar_estado_objeto([NOME, ESTADO, LOCAL, _]) :- estadoinvertido(ESTADO, ESTADOINV),
+    objeto(OBJETOID, NOME),
+    comodo(COMODOID, LOCAL, _),
+    retract(estado(OBJETOID, ESTADO, COMODOID)),
+    assertz(estado(OBJETOID, ESTADOINV, COMODOID)).
 
 % ACAO - LISTA OBJETOS (ELETRONICOS) LIGADOS
 acao_lista_objetos_on() :- findall([NOME, LOCAL, ANDAR], (objeto_comodo(NOME, ligado, LOCAL, ANDAR); objeto_comodo(NOME, aberto, LOCAL, ANDAR); objeto_comodo(NOME, destrancado, LOCAL, ANDAR)), LISTA_OBJETOS_ON),
